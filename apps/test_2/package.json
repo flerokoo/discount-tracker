@@ -1,0 +1,22 @@
+{
+  "name": "test_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/esbuild index.ts --outfile=dist/index.js --bundle --platform=node",
+    "watch": "npm run build -- --watch"
+  },
+  "dependencies": {
+    "@repo/lib": "workspace:*",
+    "express": "4.18.2"
+  },
+  "devDependencies": {
+    "@types/node": "20.10.6",
+    "esbuild": "0.19.11",
+    "typescript": "5.3.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

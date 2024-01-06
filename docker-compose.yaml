@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  test_1:
+    build:
+      context: ./apps/test_1
+    environment:
+      NODE_ENV: development
+    restart: unless-stopped
+    develop:
+      watch:
+        - action: rebuild
+          path: ./apps/test_1/dist
+  test_2:
+    build:
+      context: ./apps/test_2
+    environment:
+      NODE_ENV: development
+    ports:
+      - 9001:3000
+    restart: unless-stopped
+    develop:
+      watch:
+        - action: rebuild
+          path: ./apps/test_2/dist
