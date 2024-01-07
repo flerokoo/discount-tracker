@@ -17,6 +17,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata":true
     // "inlineSourceMap": true,
     // "sourceMap": true
   }
