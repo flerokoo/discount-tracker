@@ -12,18 +12,17 @@ import { Page } from "puppeteer";
 
 dotenv.config({ allowEmptyValues: true });
 
-
 (async () => {
   const browser = await createBrowser(10);
 
-  const usedTestCases = [3].map((_) => testCases[_] as [number, string]);
+  const usedTestCases = [4].map((_) => testCases[_] as [number, string]);
   for (let [realPrice, url] of usedTestCases) {
     console.log("\n");
     console.log(url);
     console.log("----------------------");
     console.log("should be " + realPrice);
     const data = await browser.run(async (page) => {
-      await page.goto(url);
+      await Promise.race([page.goto(url), delay(10000)]);
       await delay(2000);
       const title = await page.title();
       const content = await page.content();
@@ -39,20 +38,3 @@ dotenv.config({ allowEmptyValues: true });
   }
   await browser.close();
 })();
-
-// const guessCoverImage = async (page) => {
-//   return await page.evaluate(() => {
-//     const score = (img) => {
-//       const area = img.width * img.height;
-//       const aspect = img.width / img.height;
-//       const aspectScoreMultiplier = aspect > 1 && aspect < 2 ? 1.5 : 1;
-//       return area * aspectScoreMultiplier;
-//     };
-
-//     const images = [...document.querySelectorAll("img")];
-//     const sortedImages = images
-//       .filter((_) => !_.src.toLowerCase().startsWith("data"))
-//       .sort((a, b) => score(b) - score(a));
-//     return sortedImages[0].src;
-//   });
-// };
