@@ -5,17 +5,16 @@ export const cleanupPage = async (page: Page) =>
     const removed = [
       "header",
       "footer",
-      "head",
       "#header",
       "#footer",
       "#sidebar",
       ".header",
       ".footer",
-      ".sidebar",
+      ".sidebar", 
     ];
     removed.forEach((_) => document.querySelector(_)?.remove());
 
-    const removedAll = ["script", "link"];
+    const removedAll = ["script"];
     removedAll.forEach((_) =>
       [...document.querySelectorAll(_)].forEach((_) => _.remove())
     );

@@ -17,11 +17,11 @@ export const createBrowser = async (concurrency: number) => {
     targetFilter: (target) => !!target.url,
   });
 
-  type PageTask = (page: Page) => Promise<any>;
+  type PageTask<T> = (page: Page) => Promise<T>;
 
   let numPages = 0;
   const idlePages: Page[] = [];
-  const tasks: PageTask[] = [];
+  const tasks: PageTask<any>[] = [];
 
   const next = async () => {
     if (tasks.length === 0) return;
@@ -37,8 +37,8 @@ export const createBrowser = async (concurrency: number) => {
   };
 
   return {
-    async run(cb: PageTask) {
-      return new Promise<void>((resolve) => {
+    async run<T>(cb: PageTask<T>) {
+      return new Promise<T>((resolve) => {
         tasks.push(async (page: Page) => {
           const result = await cb(page);
           resolve(result);
