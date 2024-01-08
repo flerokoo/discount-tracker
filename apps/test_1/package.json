@@ -8,7 +8,7 @@
     "watch": "npm run build -- --watch"
   },
   "dependencies": {
-    "express": "4.18.2"
+
   },
   "devDependencies": {
     "@types/node": "20.10.6",
