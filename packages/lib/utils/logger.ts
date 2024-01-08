@@ -4,7 +4,7 @@ import cluster from 'cluster';
 import winston from 'winston';
 const format = winston.format;
 
-const logPath = (filename: string) => path.join('/logs', filename);
+const logPath = (filename: string) => path.join('logs', filename);
 
 const transports = cluster.isPrimary
   ? [
@@ -44,4 +44,9 @@ const logger = {
   error: (msg: string) => winstonLogger.error(msg)
 };
 
+// const logger = {
+//   info: console.log,
+//   warn: console.log,
+//   error: console.log
+// }
 export { logger };

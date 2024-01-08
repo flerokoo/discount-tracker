@@ -1,6 +1,4 @@
-import { DependencyContainer } from "tsyringe";
 import type { Binding } from "./Binding";
-import { JwtTokenValidator } from "./!!jwt-validator";
 import { WebApplication } from ".";
 import { Request, Response } from "express";
 import { IUser } from "@repo/domain/entities/IUser";

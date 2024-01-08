@@ -2,26 +2,35 @@ import { Request, Response } from 'express';
 import { AuthenticationError, AuthorizationError } from '../../utils/errors.js';
 import { handleError } from '../handle-error.js';
 import { hasCurrentUser, setCurrentUser } from '../request-context.js';
-import { JwtTokenValidator } from '../!!jwt-validator.js';
+import { Authenticator } from '../types.js';
 
-// export const createAuthenticatorMiddlware =
-//   (validateToken: JwtTokenValidator) =>
-//   (req: Request, res: Response, next: () => void) => {
-//     const token = req.header('Authorization');
 
-//     if (!token) {
-//       next();
-//       return;
-//     }
+export const createAuthenticatorMiddlware =
+  (authenticator: Authenticator) =>
+  (req: Request, res: Response, next: () => void) => {
+    // const token = req.header('Authorization');
 
-//     try {
-//       const user = validateToken(token);
-//       setCurrentUser(user);
-//       next();
-//     } catch (err) {
-//       handleError(new AuthenticationError('Token is not valid'), res);
-//     }
-//   };
+    // if (!token) {
+    //   next();
+    //   return;
+    // }
+
+    // try {
+    //   const user = authenticator(token);
+    //   setCurrentUser(user);
+    //   next();
+    // } catch (err) {
+    //   handleError(new AuthenticationError('Token is not valid'), res);
+    // }
+
+    try {
+      const user = authenticator(req, res);
+      setCurrentUser(user);
+      next();
+    } catch (err) {
+      handleError(new AuthenticationError('Not authenticated'), res);
+    }
+  };
 
 export const checkAuth = async (req: Request, res: Response, next: () => void) => {
   if (!hasCurrentUser()) {

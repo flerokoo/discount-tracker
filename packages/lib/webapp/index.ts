@@ -1,13 +1,7 @@
 import "reflect-metadata";
 import http from "node:http";
 import https from "node:https";
-import {
-  DependencyContainer,
-  container as globalContainer,
-  inject,
-  injectable,
-  singleton,
-} from "tsyringe";
+import { DependencyContainer, InjectionToken, container as globalContainer, inject, singleton } from "tsyringe";
 import { readFileSync } from "node:fs";
 import gracefulShutdownHandler from "../utils/graceful-shutdown";
 import { WebApplicationParams, Ctor } from "./types";
@@ -15,16 +9,18 @@ import { Binding, bind } from "./Binding";
 import express from "express";
 import type { Request, Response } from "express";
 import { configureExpress } from "./configure-express-app";
-import { Get, Prefix } from "../utils/Route.decorator";
 import { createRouterFromMetadata } from "./routes/create-router-from-metadata";
+import { Prefix, Get } from "../utils/Route.decorator";
+import { IUser } from "@repo/domain/entities/IUser";
 
 export class WebApplication<TRepository, TService, TController> {
-  public readonly container: DependencyContainer;
+  private container: DependencyContainer;
   private params: WebApplicationParams<TRepository, TService, TController>;
   private httpServer!: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
   private httpsServer!: https.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
   private expressApp!: express.Application;
   private listening = false;
+
   constructor(params: WebApplicationParams<TRepository, TService, TController>) {
     this.params = params;
     const { services, repositories, values, controllers } = params;
@@ -32,12 +28,13 @@ export class WebApplication<TRepository, TService, TController> {
     this.registerServices(services);
     this.registerServices(repositories);
     this.registerServices(controllers);
-    this.createExpressApp();
     if (values) this.registerValues(values);
+    this.createExpressApp();
   }
 
   private registerValues(values: Record<string, any>) {
     for (let key of Object.keys(values)) {
+      console.log(key, values[key])
       this.container.register(key, { useValue: values[key] });
     }
   }
@@ -46,7 +43,6 @@ export class WebApplication<TRepository, TService, TController> {
     for (let service of services) {
       const token = service instanceof Binding ? service.token : service;
       const type = service instanceof Binding ? service.value : service;
-      console.log(token, type);
       this.container.register(token, { useClass: type });
     }
   }
@@ -83,14 +79,14 @@ export class WebApplication<TRepository, TService, TController> {
       shutdownGracefully(server);
       promises.push(start(server, port, hostname));
     }
-    
+
     this.listening = true;
 
     await Promise.all(promises);
   }
 
   public async close() {
-    const close = (server: any) =>
+    const close = (server: any) => 
       new Promise((resolve) => {
         server.close(resolve);
       });
@@ -100,10 +96,10 @@ export class WebApplication<TRepository, TService, TController> {
     if (this.httpsServer) promises.push(close(this.httpsServer));
   }
 
-  private createExpressApp() {
+  private createExpressApp() {  
     const app = express();
     configureExpress(app, this.params.auth?.(this));
-
+ 
     for (let contrId of this.params.controllers) {
       const token = contrId instanceof Binding ? contrId.token : contrId;
       const controller = this.container.resolve(token);
@@ -113,8 +109,12 @@ export class WebApplication<TRepository, TService, TController> {
 
     this.expressApp = app;
   }
+
+  public getDependency<T>(token: InjectionToken<T>) {
+    return this.container.resolve<T>(token) as T;
+  }
 }
-console.log("VOT")
+console.log("VOT");
 interface ISample {}
 
 class Sample {}
@@ -141,14 +141,18 @@ class ServiceB {
   }
 }
 
+class UnusedService {
+
+}
+
 @singleton()
 @Prefix("/hello")
-class Controller {
+class Controller1 {
   constructor(a: Sample, b: ServiceB, @inject("concurrency") c: number) {
     console.log("controller: ", a, b, c);
   }
 
-  @Get("/world")
+  @Get("/world", {checkAuth: true})
   private helloWorld(req: Request, res: Response) {
     res.end("Hello world!");
   }
@@ -157,7 +161,7 @@ class Controller {
 const app = new WebApplication({
   repositories: [Repo],
   services: [bind(ServiceA).as(Sample), ServiceB],
-  controllers: [Controller],
+  controllers: [Controller1],
   values: {
     concurrency: 5,
   },
@@ -165,8 +169,9 @@ const app = new WebApplication({
     enabled: true,
     port: 3000,
   },
+  auth: app => (req, res) => {
+    return  {id: 1} as IUser
+  }
 });
-
-app.container.resolve(Controller);
 
 app.listen().then(() => console.log("listenening"));

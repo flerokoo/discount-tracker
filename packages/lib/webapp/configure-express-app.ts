@@ -8,8 +8,8 @@ import { setRequestContext } from "./middlewares/set-request-context.js";
 import gracefulShutdownHandler from "../utils/graceful-shutdown.js";
 import { createGracefulShutdownMiddleware } from "./middlewares/graceful-shutdown.js";
 import { logMiddleware } from "./middlewares/log.js";
-import { JwtTokenValidator } from "./!!jwt-validator.js";
 import { Authenticator } from "./types.js";
+import { createAuthenticatorMiddlware } from "./middlewares/auth.js";
 
 export function configureExpress(app: express.Application, authenticator?: Authenticator) {
   app.use(helmet());
@@ -20,6 +20,6 @@ export function configureExpress(app: express.Application, authenticator?: Authe
   app.use(cookieParser());
   app.use(logMiddleware);
   app.use(setRequestContext);
-  if (authenticator) app.use(authenticator);
+  if (authenticator) app.use(createAuthenticatorMiddlware(authenticator));
   app.use(errorHandler); // handle sync errors
 }

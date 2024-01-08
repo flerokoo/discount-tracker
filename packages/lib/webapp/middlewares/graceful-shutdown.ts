@@ -1,13 +1,13 @@
-import { Request, Response } from 'express';
-import { handleError } from '../handle-error.js';
-import { ServiceUnavailableError } from '../../utils/errors.js';
-import { logger } from '../../utils/logger.js';
-import type GracefulShutdownHandler from '@flerokoo/graceful-shutdown-handler';
-import { delay } from '../../utils/delay.js';
+import GracefulShutdownHandler from "@flerokoo/graceful-shutdown-handler";
+import { delay } from "../../utils/delay";
+import { ServiceUnavailableError } from "../../utils/errors";
+import { logger } from "../../utils/logger";
+import { handleError } from "../handle-error";
+import type { Request, Response } from "express";
 
 export function createGracefulShutdownMiddleware(handler: GracefulShutdownHandler) {
   const runningRequests = new Set();
-
+  
   handler.addCallback(
     async () => {
       logger.info('waiting for ongoing requests to end...');

@@ -1,0 +1,25 @@
+{"level":"info","message":"waiting for ongoing requests to end...","service":"api"}
+{"level":"info","message":"all requests ended","service":"api"}
+{"level":"info","message":"waiting for ongoing requests to end...","service":"api"}
+{"level":"info","message":"all requests ended","service":"api"}
+{"level":"info","message":"waiting for ongoing requests to end...","service":"api"}
+{"level":"info","message":"all requests ended","service":"api"}
+{"level":"info","message":"waiting for ongoing requests to end...","service":"api"}
+{"level":"info","message":"all requests ended","service":"api"}
+{"level":"info","message":"GET / 404 ::1","service":"api"}
+{"level":"info","message":"GET /hello/world 200 ::1","service":"api"}
+{"level":"info","message":"GET /favicon.ico 404 ::1","service":"api"}
+{"level":"info","message":"GET /hello/world 200 ::1","service":"api"}
+{"level":"error","message":"No access token found, not authorized","service":"api"}
+{"level":"info","message":"GET /hello/world 401 ::1","service":"api"}
+{"level":"info","message":"GET /hello/world 200 ::1","service":"api"}
+{"level":"error","message":"Not authenticated","service":"api"}
+{"level":"info","message":"GET /hello/world 403 ::1","service":"api"}
+{"level":"error","message":"Not authenticated","service":"api"}
+{"level":"info","message":"GET /hello/world 403 ::1","service":"api"}
+{"level":"info","message":"GET /hello/world 200 ::1","service":"api"}
+{"level":"info","message":"GET /hello/world 200 ::1","service":"api"}
+{"level":"error","message":"Not authenticated","service":"api"}
+{"level":"info","message":"GET /hello/world 403 ::1","service":"api"}
+{"level":"error","message":"Not authenticated","service":"api"}
+{"level":"info","message":"GET /hello/world 403 ::1","service":"api"}
