@@ -3,9 +3,9 @@ import express from 'express';
 import { adaptRouteForExpress } from './adapt-route-for-express.js';
 import { checkAuth as checkAuthMiddleware } from '../middlewares/auth.js';
 import pathModule from 'node:path';
+import type { Request, Response, Application} from 'express'
 
-// eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
-export function createRouterFromMetadata(obj: any) {
+export function createRouterFromMetadata(obj: any) : any {
   const { prefix, routes } = getControllerMetadata(obj.constructor.prototype);
   const router = express.Router();
 
