@@ -1,20 +1,47 @@
 version: "3.8"
 services:
-  # redis:
-    # image: redis:7.2.3-alpine
+
+  redis:
+    image: redis:7.2.3-alpine
+  
   api:
-    # depends_on:
-      # - redis
+    depends_on:
+      - redis
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
+      dockerfile: docker/Dockerfile
+      args:
+        APP_NAME: api
     environment:
       NODE_ENV: development
+    ports:
+      - 3000:3000
     restart: unless-stopped
     develop:
       watch:
         - action: rebuild
-          path: ./apps/api/dist
+          path: ./apps/api/
+
+  scraper:
+    depends_on:
+      - redis
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        APP_NAME: scraper
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3001:3000
+    restart: unless-stopped
+    develop:
+      watch:
+        - action: rebuild
+          path: ./apps/api/
+
+    
+
   # test_2:
   #   build:
   #     context: ./apps/test_2

@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { IPrice } from "@repo/domain/entities/IPrice";
+import { IPrice } from "@repo/domain/src/entities/IPrice";
 import { Product } from "./Product";
 
 

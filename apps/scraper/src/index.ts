@@ -9,10 +9,31 @@ import { cleanupPage } from "./scraper/cleanup-page";
 import { extractPrice } from "./scraper/extract-price";
 import dotenv from "dotenv-safe";
 import { Page } from "puppeteer";
+import { WebApplication } from '@repo/lib/src/webapp'
+import { logger } from "@repo/lib/src/utils/logger";
 
 dotenv.config({ allowEmptyValues: true });
 
 (async () => {
+  const browser = await createBrowser(parseInt(process.env.PARSE_CONCURRENCY!) || 3);
+
+  const values = { browser };
+
+  const app = new WebApplication({
+    values,
+    http: {
+      enabled: true,
+      port: parseInt(process.env.PORT!) || 3000
+    }
+  })
+
+  await app.listen();
+  logger.info("scraper ready");
+
+})();
+
+(async () => {
+  return;
   const browser = await createBrowser(10);
 
   const usedTestCases = [4].map((_) => testCases[_] as [number, string]);

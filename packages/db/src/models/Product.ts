@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { IPrice } from "@repo/domain/entities/IPrice";
+import { IPrice } from "@repo/domain/src/entities/IPrice";
 import { Price } from "./Price";
-import { IProduct } from "@repo/domain/entities/IProduct";
+import { IProduct } from "@repo/domain/src/entities/IProduct";
 
 @Entity()
 export class Product implements IProduct {

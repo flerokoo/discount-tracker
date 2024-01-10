@@ -1,12 +1,12 @@
 import bcrypt, { hash } from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { IUserRepository, UserRepository } from "@repo/domain/repositories/IUserRepository.js";
-import { IUser } from "@repo/domain/entities/IUser";
-import { AuthenticationError, ConflictError } from "@repo/lib/utils/errors";
+import { IUserRepository, UserRepository } from "@repo/domain/src/repositories/IUserRepository.js";
+import { IUser } from "@repo/domain/src/entities/IUser";
+import { AuthenticationError, ConflictError } from "@repo/lib/src/utils/errors";
 import { inject, injectable } from "tsyringe";
 
 const JWT_EXPIRATION_TIME = 360000;
-const INVALID_CREDS_MESSAGE = "Invalid credentials";
+const INVALID_CREDS_MESSAGE = "Invalid credentials  ";
 type JwtPayload = Pick<IUser, "email" | "id">;
 
 @injectable()

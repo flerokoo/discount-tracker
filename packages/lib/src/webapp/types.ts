@@ -1,7 +1,7 @@
 import type { Binding } from "./Binding";
 import { WebApplication } from ".";
 import { Request, Response } from "express";
-import { IUser } from "@repo/domain/entities/IUser";
+import { IUser } from "@repo/domain/src/entities/IUser";
 
 
 
@@ -17,7 +17,7 @@ export type WebApplicationHttpsParams = WebApplicationHttpParams & {
 };
 
 export type Authenticator = {
-  (req: Request, res: Response) : IUser
+  (req: Request, res: Response) : IUser | null
 }
 
 export type AuthenticatorFactory = {

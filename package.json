@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "build:packages": "pnpm run -r --if-present --filter \"./packages/**\" build",
+    "build:apps": "pnpm run -r --if-present --filter \"./apps/**\" build",
     "build": "pnpm run -r --if-present build",
     "watch": "pnpm run --parallel -r --if-present watch",
     "compose": "docker compose watch",

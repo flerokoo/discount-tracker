@@ -18,7 +18,7 @@ import type { Request, Response } from "express";
 import { configureExpress } from "./configure-express-app";
 import { createRouterFromMetadata } from "./routes/create-router-from-metadata";
 import { Prefix, Get } from "../utils/Route.decorator";
-import { IUser } from "@repo/domain/entities/IUser";
+import { IUser } from "@repo/domain/src/entities/IUser";
 
 export class WebApplication {
   private container: DependencyContainer;

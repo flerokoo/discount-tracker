@@ -43,7 +43,7 @@ const discover = async (hostname: string): Promise<ServiceGroup> => {
   try {
     await update();
   } catch (err) {
-    throw new Error(`Error when discovering ${hostname} services`);
+    throw new Error(`Error when discovering ${hostname} services: ` + err);
   }
 
   return {

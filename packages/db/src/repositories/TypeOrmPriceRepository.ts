@@ -1,6 +1,6 @@
-import { IPrice } from "@repo/domain/entities/IPrice";
-import { IPriceRepository } from "@repo/domain/repositories/IPriceRepository";
-import { DeepPartial } from "@repo/domain/types";
+import { IPrice } from "@repo/domain/src/entities/IPrice";
+import { IPriceRepository } from "@repo/domain/src/repositories/IPriceRepository";
+import { DeepPartial } from "@repo/domain/src/types";
 import { inject, injectable } from "tsyringe";
 import { DataSource, FindOptionsWhere, Repository } from "typeorm";
 import type { DeepPartial as TypeOrmDeepPartial} from 'typeorm'

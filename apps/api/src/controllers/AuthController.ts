@@ -1,9 +1,9 @@
 import { injectable } from "tsyringe";
-import { Post, Prefix } from "@repo/lib/utils/Route.decorator";
+import { Post, Prefix } from "@repo/lib/src/utils/Route.decorator";
 import { AuthService } from "../services/AuthService";
 import type { Request, Response } from "express";
 import z from 'zod';
-import { success } from '@repo/lib/utils/success'
+import { success } from '@repo/lib/src/utils/success'
 
 const credentialsSchema = z.object({
   email: z.string().email(),

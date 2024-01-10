@@ -1,13 +1,12 @@
-import { ProductRepository } from "@repo/domain/repositories/IProductRepository";
-import { UserRepository } from "@repo/domain/repositories/IUserRepository";
-import { Post, Prefix } from "@repo/lib/utils/Route.decorator";
-import { getCurrentUser } from "@repo/lib/webapp/request-context";
+import { ProductRepository } from "@repo/domain/src/repositories/IProductRepository";
+import { UserRepository } from "@repo/domain/src/repositories/IUserRepository";
+import { getCurrentUser } from "@repo/lib/src/webapp/request-context";
 import { inject, injectable } from "tsyringe";
-import { ServiceGroup, discover } from "@repo/lib/dns/discover";
-import { PriceRepository } from "@repo/domain/repositories/IPriceRepository";
+import { ServiceGroup, discover } from "@repo/lib/src/dns/discover";
+import { PriceRepository } from "@repo/domain/src/repositories/IPriceRepository";
 import type { RedisClientType } from "redis";
-import { AuthorizationError } from "@repo/lib/utils/errors";
-
+import { AuthorizationError } from "@repo/lib/src/utils/errors";
+import { IProduct } from "@repo/domain/src/entities/IProduct";
 type ScraperScrapeDto = {
   imageUrl: string;
   title: string;
@@ -47,7 +46,6 @@ const redisNamespace = <T>(
 };
 
 @injectable()
-@Prefix("/v1/products")
 export class ProductService {
   scrapers!: ServiceGroup;
   productListCache: NamespacedRedis<number>;
@@ -102,15 +100,15 @@ export class ProductService {
     await this.productListCache.del(user.id);
   }
 
-  async getProducts() {
+  async getProducts(): Promise<IProduct[]> {
     const user = getCurrentUser();
     const cached = await this.productListCache.get(user.id);
     if (cached) {
-      return JSON.parse(cached);
+      return JSON.parse(cached) as IProduct[];
     } else {
-      const result = this.userRepo.selectOne({ id: user.id }).then((_) => _?.products);
+      const result = await this.userRepo.selectOne({ id: user.id }).then((_) => _?.products);
       await this.productListCache.set(user.id, JSON.stringify(result));
-      return result;
+      return result as IProduct[];
     }
   }
 }

@@ -1,7 +1,7 @@
 
-const guessCoverImage = async (page) => {
+const guessCoverImage = async (page : any) => {
   return await page.evaluate(() => {
-    const score = (img) => {
+    const score = (img : any) => {
       const area = img.width * img.height;
       const aspect = img.width / img.height;
       const aspectScoreMultiplier = aspect > 1 && aspect < 2 ? 1.5 : 1;

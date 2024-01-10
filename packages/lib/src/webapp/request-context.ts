@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from "async_hooks";
-import { IUser } from "@repo/domain/entities/IUser";
+import { IUser } from "@repo/domain/src/entities/IUser";
 import { AuthorizationError } from "../utils/errors";
 
 export type RequestContext = {

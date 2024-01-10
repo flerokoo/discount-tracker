@@ -1,6 +1,6 @@
-import { IProduct } from "@repo/domain/entities/IProduct";
-import { IProductRepository } from "@repo/domain/repositories/IProductRepository";
-import { DeepPartial } from "@repo/domain/types";
+import { IProduct } from "@repo/domain/src/entities/IProduct";
+import { IProductRepository } from "@repo/domain/src/repositories/IProductRepository";
+import { DeepPartial } from "@repo/domain/src/types";
 import { inject, injectable } from "tsyringe";
 import { DataSource, FindOptionsWhere, Repository } from "typeorm";
 import type { DeepPartial as TypeOrmDeepPartial} from 'typeorm'

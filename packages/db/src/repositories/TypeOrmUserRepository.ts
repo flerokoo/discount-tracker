@@ -1,6 +1,6 @@
-import { IUser } from "@repo/domain/entities/IUser";
-import { IUserRepository, UserRepository } from "@repo/domain/repositories/IUserRepository";
-import { DeepPartial } from "@repo/domain/types";
+import { IUser } from "@repo/domain/src/entities/IUser";
+import { IUserRepository, UserRepository } from "@repo/domain/src/repositories/IUserRepository";
+import { DeepPartial } from "@repo/domain/src/types";
 import { inject, injectable, singleton } from "tsyringe";
 import { DataSource, FindOptionsWhere, Repository } from "typeorm";
 import { User } from "../models/User";
