@@ -1,7 +1,14 @@
 import "reflect-metadata";
 import http from "node:http";
 import https from "node:https";
-import { DependencyContainer, InjectionToken, container as globalContainer, inject, singleton } from "tsyringe";
+import {
+  DependencyContainer,
+  InjectionToken,
+  Lifecycle,
+  container as globalContainer,
+  inject,
+  singleton,
+} from "tsyringe";
 import { readFileSync } from "node:fs";
 import gracefulShutdownHandler from "../utils/graceful-shutdown";
 import { WebApplicationParams, Ctor } from "./types";
@@ -13,28 +20,27 @@ import { createRouterFromMetadata } from "./routes/create-router-from-metadata";
 import { Prefix, Get } from "../utils/Route.decorator";
 import { IUser } from "@repo/domain/entities/IUser";
 
-export class WebApplication<TRepository, TService, TController> {
+export class WebApplication {
   private container: DependencyContainer;
-  private params: WebApplicationParams<TRepository, TService, TController>;
+  private params: WebApplicationParams;
   private httpServer!: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
   private httpsServer!: https.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
-  private expressApp!: express.Application;
+  private expressApp!: express.Application | undefined;
   private listening = false;
 
-  constructor(params: WebApplicationParams<TRepository, TService, TController>) {
+  constructor(params: WebApplicationParams) {
     this.params = params;
     const { services, repositories, values, controllers } = params;
     this.container = globalContainer.createChildContainer();
-    this.registerServices(services);
-    this.registerServices(repositories);
-    this.registerServices(controllers);
+    this.container.registerInstance(WebApplication, this);
+    if (services) this.registerServices(services);
+    if (repositories) this.registerServices(repositories);
+    if (controllers) this.registerServices(controllers);
     if (values) this.registerValues(values);
-    this.createExpressApp();
   }
 
   private registerValues(values: Record<string, any>) {
     for (let key of Object.keys(values)) {
-      console.log(key, values[key])
       this.container.register(key, { useValue: values[key] });
     }
   }
@@ -43,14 +49,15 @@ export class WebApplication<TRepository, TService, TController> {
     for (let service of services) {
       const token = service instanceof Binding ? service.token : service;
       const type = service instanceof Binding ? service.value : service;
-      this.container.register(token, { useClass: type });
+      this.container.registerSingleton(token, type);
     }
   }
 
   public async listen() {
     if (this.listening) return;
+    this.createExpressApp();
     const { params, expressApp } = this;
-    const promises = [];
+    const promises : Promise<unknown>[] = [];
 
     const start = (server: any, port: number, hostname?: string) =>
       new Promise((resolve) => {
@@ -86,21 +93,21 @@ export class WebApplication<TRepository, TService, TController> {
   }
 
   public async close() {
-    const close = (server: any) => 
+    const close = (server: any) =>
       new Promise((resolve) => {
         server.close(resolve);
       });
 
-    const promises = [];
+    const promises: Promise<unknown>[] = [];
     if (this.httpServer) promises.push(close(this.httpServer));
     if (this.httpsServer) promises.push(close(this.httpsServer));
   }
 
-  private createExpressApp() {  
+  private createExpressApp() {
     const app = express();
     configureExpress(app, this.params.auth?.(this));
- 
-    for (let contrId of this.params.controllers) {
+    const controllers = this.params.controllers ?? [];
+    for (let contrId of controllers) {
       const token = contrId instanceof Binding ? contrId.token : contrId;
       const controller = this.container.resolve(token);
       const router = createRouterFromMetadata(controller);

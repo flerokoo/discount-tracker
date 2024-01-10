@@ -20,15 +20,15 @@ export type Authenticator = {
   (req: Request, res: Response) : IUser
 }
 
-export type AuthenticatorFactory<TRepository, TService, TController> = {
-  (app: WebApplication<TRepository, TService, TController>) : Authenticator;
+export type AuthenticatorFactory = {
+  (app: WebApplication) : Authenticator;
 }
 
-export type WebApplicationParams<TRepository, TService, TController> = {
-  repositories: (Binding<TRepository> | Ctor<TRepository>)[];
-  services: (Binding<TService> | Ctor<TService>)[];
-  controllers: (Binding<TController> | Ctor<TController>)[];
-  auth?: AuthenticatorFactory<TRepository, TService, TController>;
+export type WebApplicationParams = {
+  repositories?: (Binding<any> | Ctor<any>)[];
+  services?: (Binding<any> | Ctor<any>)[];
+  controllers?: (Binding<any> | Ctor<any>)[];
+  auth?: AuthenticatorFactory;
   values?: Record<string,any>;
   http?: WebApplicationHttpParams;
   https?: WebApplicationHttpsParams;

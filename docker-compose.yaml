@@ -1,24 +1,29 @@
 version: "3.8"
 services:
-  test_1:
+  # redis:
+    # image: redis:7.2.3-alpine
+  api:
+    # depends_on:
+      # - redis
     build:
-      context: ./apps/test_1
+      context: .
+      dockerfile: apps/api/Dockerfile
     environment:
       NODE_ENV: development
     restart: unless-stopped
     develop:
       watch:
         - action: rebuild
-          path: ./apps/test_1/dist
-  test_2:
-    build:
-      context: ./apps/test_2
-    environment:
-      NODE_ENV: development
-    ports:
-      - 9001:3000
-    restart: unless-stopped
-    develop:
-      watch:
-        - action: rebuild
-          path: ./apps/test_2/dist
+          path: ./apps/api/dist
+  # test_2:
+  #   build:
+  #     context: ./apps/test_2
+  #   environment:
+  #     NODE_ENV: development
+  #   ports:
+  #     - 9001:3000
+  #   restart: unless-stopped
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./apps/test_2/dist

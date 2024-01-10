@@ -57,8 +57,8 @@ export const extractPrice = async (page: Page) => {
     };
 
     const getTreePath = (node: HTMLElement) => {
-      const path = [];
-      const dataset = [];
+      const path : string[] = [];
+      const dataset : any[] = [];
       while (node && node.tagName !== "BODY") {
         const classes = node.className
           .split(" ")

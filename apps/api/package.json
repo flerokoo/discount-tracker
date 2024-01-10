@@ -4,19 +4,34 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/esbuild index.ts --outfile=dist/index.js --bundle --platform=node",
-    "watch": "npm run build -- --watch"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "dependencies": {
+    "@repo/db": "workspace:*",
+    "@repo/domain": "workspace:*",
+    "@repo/lib": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "2.4.3",
+    "dotenv-safe": "8.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "redis": "^4.6.12",
     "reflect-metadata": "0.2.1",
-    "@repo/domain" : "workspace:*",
-    "@repo/db" : "workspace:*",
-    "@repo/lib" : "workspace:*"
+    "sqlite3": "^5.1.7",
+    "tsyringe": "4.8.0",
+    "zod": "3.22.4",
+    "express": "4.18.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/dotenv-safe": "8.1.5",
     "@types/express": "4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "20.10.6",
-    "esbuild": "0.19.11"
+    "@types/redis": "^4.0.11",
+    "esbuild": "0.19.11",
+    "esbuild-plugin-tsc": "^0.4.0",
+    "npm-run-all": "4.1.5"
   },
   "keywords": [],
   "author": "",

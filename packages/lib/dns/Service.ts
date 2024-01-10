@@ -17,6 +17,11 @@ export class Service extends EventEmitter {
     return `${protocol}://${address}:${port}`;
   }
 
+  public getUrl(suburl: string, protocol: "http" | "https", port: number) {
+    if (!suburl.startsWith('/')) suburl = '/' + suburl;
+    return this.getBaseUrl(protocol, port) + suburl;
+  }
+
   public get isAlive() {
     return this._isAlive;
   }

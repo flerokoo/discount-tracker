@@ -8,7 +8,7 @@ export function adaptRouteForExpress(handler: (req: Request, res: Response) => P
     try {
       await handler(req, res);
     } catch (err: unknown) {
-      // handleError(err instanceof Error ? err : new Error(JSON.stringify(err)), res);
+      handleError(err instanceof Error ? err : new Error(JSON.stringify(err)), res); 
     }
   };
 }

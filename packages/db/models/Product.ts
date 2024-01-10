@@ -21,6 +21,6 @@ export class Product implements IProduct {
   updatedAt!: Date;
 
   @JoinTable()
-  @OneToMany(() => Price, price => price.productId)
+  @OneToMany(() => Price, price => price.productId, { cascade: true, onDelete: 'CASCADE' })
   prices!: IPrice[];
 }

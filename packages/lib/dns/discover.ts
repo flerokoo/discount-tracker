@@ -1,15 +1,24 @@
 import dns from "node:dns/promises";
 import { Service } from "./Service";
 import EventEmitter from "node:events";
+import { InternalError } from "../utils/errors";
 
-type ServiceGroupEvents = 'created' | 'dead'
+export type ServiceGroupEvents = "created" | "dead";
+
+export type ServiceGroup = {
+  getNextAlive(): Service;
+  getAll(): Service[];
+  readonly aliveCount: number;
+  on(evt: ServiceGroupEvents, listener: (...args: any[]) => void): EventEmitter;
+  off(evt: ServiceGroupEvents, listener: (...args: any[]) => void): EventEmitter;
+};
 
 const lookup = async (hostname: string) => {
   const result = await dns.lookup(hostname, { all: true });
   return result.map((_) => _.address);
 };
 
-const discover = async (hostname: string, port: number) => {
+const discover = async (hostname: string): Promise<ServiceGroup> => {
   const emitter = new EventEmitter();
   let rrIndex = 0;
   let services: Service[] = [];
@@ -39,10 +48,9 @@ const discover = async (hostname: string, port: number) => {
 
   return {
     getNextAlive() {
-      if (services.length === 0)
-        throw new Error(`No service address: ${hostname}`);
+      if (services.length === 0) throw new InternalError(`No service address: ${hostname}`);
       rrIndex = (rrIndex + 1) % services.length;
-      return services[rrIndex];
+      return services[rrIndex]!;
     },
 
     getAll() {

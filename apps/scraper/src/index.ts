@@ -2,11 +2,11 @@ import puppeteer from "puppeteer-extra";
 import Stealth from "puppeteer-extra-plugin-stealth";
 import https from "https";
 import { createWriteStream, mkdirSync, writeFileSync } from "fs";
-import { createBrowser } from "./src/scraper/browser";
-import { testCases } from "./src/utils/test-products";
-import { delay } from "./src/utils/utils";
-import { cleanupPage } from "./src/scraper/cleanup-page";
-import { extractPrice } from "./src/scraper/extract-price";
+import { createBrowser } from "./scraper/browser";
+import { testCases } from "./utils/test-products";
+import { delay } from "./utils/utils";
+import { cleanupPage } from "./scraper/cleanup-page";
+import { extractPrice } from "./scraper/extract-price";
 import dotenv from "dotenv-safe";
 import { Page } from "puppeteer";
 

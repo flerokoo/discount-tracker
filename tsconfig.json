@@ -3,8 +3,8 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
   "compilerOptions": {
+    "composite": true,
     "esModuleInterop": true,
-    "incremental": true,
     "isolatedModules": true,
     "lib": ["es2022", "DOM", "DOM.Iterable"],
     "module": "NodeNext",
@@ -16,8 +16,16 @@
     "strict": true,
     "target": "ES2022",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata":true
+    "emitDecoratorMetadata":true,
+    "noImplicitAny": false,
     // "inlineSourceMap": true,
-    // "sourceMap": true
-  }
+    // "sourceMap": true,
+    "outDir": "dist"
+  },
+  "references": [
+    { "path": "./packages/db"},
+    { "path": "./packages/lib"},
+    { "path": "./packages/domain"}
+  ],
+
 }

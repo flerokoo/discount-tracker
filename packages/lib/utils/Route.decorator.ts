@@ -11,8 +11,8 @@ const ROUTE_META_KEY = '__route__';
 export type RouteParams = {
   checkAuth?: boolean;
   bodySchema?: ZodTypeAny;
-  // paramsSchema?: ZodTypeAny;
-  // querySchema?: ZodTypeAny;
+  paramsSchema?: ZodTypeAny;
+  querySchema?: ZodTypeAny;
 };
 
 export type RouteDefinition = {
@@ -54,8 +54,8 @@ function Route(method: HttpMethod, path: string, params?: RouteParams) {
     descriptor.value = async function (req: Request, res: Response, next: () => void) {
       const tasks: [keyof Request, ZodTypeAny | undefined][] = [
         ['body', params?.bodySchema],
-        // ['params', params?.paramsSchema],
-        // ['query', params?.querySchema]
+        ['params', params?.paramsSchema],
+        ['query', params?.querySchema]
       ];
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -98,7 +98,7 @@ export function Put(path: string, params?: RouteParams) {
 }
 
 export function getControllerMetadata(proto: object): ControllerMetadata {
-  const methodsWithMetadata = [];
+  const methodsWithMetadata : RouteDefinition[] = [];
 
   for (const propertyName of Object.getOwnPropertyNames(proto)) {
     if (propertyName === 'constructor') {

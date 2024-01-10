@@ -12,6 +12,6 @@ const guessCoverImage = async (page) => {
     const sortedImages = images
       .filter((_) => !_.src.toLowerCase().startsWith("data"))
       .sort((a, b) => score(b) - score(a));
-    return sortedImages[0].src;
+    return sortedImages[0]!.src;
   });
 };

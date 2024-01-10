@@ -8,5 +8,5 @@ export function handleError(err: Error, res: Response) {
   const payload = err instanceof ApplicationError ? err.payload : undefined;
   const message = err.message ?? err.name ?? 'Unknown error';
   res.status(status).json({ status: 'error', message, payload });
-  logger.error(message);
+  logger.error(message + '\n' + err?.stack);
 }

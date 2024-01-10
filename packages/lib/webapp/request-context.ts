@@ -1,5 +1,6 @@
 import { AsyncLocalStorage } from "async_hooks";
 import { IUser } from "@repo/domain/entities/IUser";
+import { AuthorizationError } from "../utils/errors";
 
 export type RequestContext = {
   user?: IUser;
@@ -16,7 +17,9 @@ export function hasCurrentUser(): boolean {
 }
 
 export function getCurrentUser(): IUser {
-  return contextStorage.getStore()?.user as IUser;
+  const user = contextStorage.getStore()?.user;
+  if (!user) throw new AuthorizationError('No user');
+  return user as IUser;
 }
 
 export function setCurrentUser(user: IUser) {
