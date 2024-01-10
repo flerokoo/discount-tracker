@@ -1,15 +1,13 @@
-import { Get, Post, Prefix } from "@repo/lib/src/utils/Route.decorator";
+import { Get, Post, Prefix, success } from "@repo/lib";
 import { injectable } from "tsyringe";
 import type { Request, Response } from "express";
-import { success } from "@repo/lib/src/utils/success";
 import zod from "zod";
 import { ProductService } from "../services/ProductService";
-
 
 @injectable()
 @Prefix("/v1/products")
 export class ProductController {
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   @Post("/", {
     checkAuth: true,

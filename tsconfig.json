@@ -20,8 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "@repo/lib/*": ["packages/lib/*"],
-      "@repo/db/*": ["packages/db/dist/*"],
-      "@repo/domain/*": ["packages/domain/dist/*"],
+      "@repo/db/*": ["packages/db/*"],
+      "@repo/domain/*": ["packages/domain/*"],
     }
   },
   "exclude": [

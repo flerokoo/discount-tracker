@@ -1,12 +1,8 @@
-import { ProductRepository } from "@repo/domain/src/repositories/IProductRepository";
-import { UserRepository } from "@repo/domain/src/repositories/IUserRepository";
-import { getCurrentUser } from "@repo/lib/src/webapp/request-context";
+import { ProductRepository, UserRepository, PriceRepository, IProduct } from "@repo/domain";
+import { getCurrentUser, discover, AuthorizationError, ServiceGroup } from "@repo/lib";
 import { inject, injectable } from "tsyringe";
-import { ServiceGroup, discover } from "@repo/lib/src/dns/discover";
-import { PriceRepository } from "@repo/domain/src/repositories/IPriceRepository";
 import type { RedisClientType } from "redis";
-import { AuthorizationError } from "@repo/lib/src/utils/errors";
-import { IProduct } from "@repo/domain/src/entities/IProduct";
+
 type ScraperScrapeDto = {
   imageUrl: string;
   title: string;

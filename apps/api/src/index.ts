@@ -3,19 +3,14 @@ import { WebApplication } from "@repo/lib/src/webapp";
 import { AuthController } from "./controllers/AuthController";
 import { ProductController } from "./controllers/ProductController";
 import dataSource from "@repo/db/src/data-source";
-import { TypeOrmUserRepository } from "@repo/db/src/repositories/TypeOrmUserRepository";
-import { TypeOrmProductRepository } from "@repo/db/src/repositories/TypeOrmProductRepository";
-import { TypeOrmPriceRepository } from "@repo/db/src/repositories/TypeOrmPriceRepository";
-import { bind } from "@repo/lib/src/webapp/Binding";
-import { UserRepository } from "@repo/domain/src/repositories/IUserRepository";
+import { TypeOrmUserRepository, TypeOrmPriceRepository, TypeOrmProductRepository } from "@repo/db";
+import { UserRepository, PriceRepository, ProductRepository } from "@repo/domain";
 import { AuthService } from "./services/AuthService";
 import { ProductService } from "./services/ProductService";
-import { logger } from "@repo/lib/src/utils/logger";
 import dotenv from "dotenv-safe";
 import * as redis from "redis";
-import { PriceRepository } from "@repo/domain/src/repositories/IPriceRepository";
-import { ProductRepository } from "@repo/domain/src/repositories/IProductRepository";
 import { authenticatorFactory } from "./auth";
+import { bind, logger } from "@repo/lib";
 
 dotenv.config({ allowEmptyValues: true });
 
